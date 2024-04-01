@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row text-white">
+    <div class="col-12 mt-3">
+        <div class="row justify-content-center">
+            <a href="{% url 'meows_app:meows_list' %}" class="text-decoration-none">
+                <i class="fa fa-arrow-left mb-4 me-1" aria-hidden="true"></i>
+                Volver al feed
+            </a>
+            <div class="col-9">
+                <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+            </div>
+            {% if request.user.id == user.id %}
+            <div class="col-3 pt-1 d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#meowModalForm">Agregar un maullido</button>
+            </div>
+            {% endif %}
+            {% if user.description %}
+            <h4>Acerca de {{ user.first_name }} {{ user.last_name }}:</h4>
+            <p>{{ user.description }}</p>
+            {% endif %}
+        </div>
+        <p>{{ user.occupation }}</p>
+        <h4>Mis Maullidos</h4>
+    </div>
+    <hr>
+    <div class="col-12 mt-1">
+        {% include "meows/meows_list.html" %}
+    </div>
+
+    {% include "meows/meows_form.html" %}
+</div>
+{% endblock content %}

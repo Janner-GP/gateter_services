@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db-gateter:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${NAME_DB}
+      POSTGRES_USER: ${USER_DB}
+      POSTGRES_PASSWORD: ${PWD_DB}
+
+  web-gateter:
+    image: jannergp30/gateter_services-web-gateter:latest
+    environment:
+      - ENVIROMENT=${ENVIROMENT}
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - NAME_DB=${NAME_DB}
+      - USER_DB=${USER_DB}
+      - PWD_DB=${PWD_DB}
+      - HOST_DB=db-gateter
+      - PORT_DB=${PORT_DB}
+    command: sh -c "env && python manage.py migrate && gunicorn gateter_app.wsgi:application --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db-gateter
+
+volumes:
+  postgres_data:

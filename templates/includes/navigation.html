@@ -1,0 +1,31 @@
+{% load static %}
+
+<nav class="navbar bg-body-dark sticky-top mb-1" data-bs-theme="dark" id="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#">Gateter App</a>
+        <div>
+            {% if request.user.is_authenticated %}
+                <button class="btn btn-sm btn-danger me-2" onclick="logoutUser()">Cerrar Sesión</button>
+                <a class="btn btn-sm btn-primary me-2" href="{% url 'users_app:user_profile' request.user.id %}">Mi perfil</a>
+            {% else %}
+                <!-- Botones de registro e inicio de sesión -->
+                <button class="btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#userRegisterModalForm" id="btnRegister">Registrarse</button>
+                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal" data-bs-target="#userLoginModalForm" id="btnLogin">Iniciar Sesión</button>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Manejar el Scroll para una mejor UX -->
+<script>
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 0) {
+            navbar.classList.remove('fixed');
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled')
+            navbar.classList.add('fixed');
+        }
+      });
+</script>

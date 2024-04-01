@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row row-cols-1 row-cols-md-12 g-4" style="width: 100%;">
+    {% if request.user.is_authenticated and welcome_text == 'true' %}
+            <h3 class="text-white pt-3">Bienvenido de nuevo, {{ user.first_name }} {{ user.last_name }}</h3>
+    {% endif %}
+    {% for meow in meows %}
+    <div class="col-12">
+        <div class="card card-h100 text-bg-dark">
+          <div class="card-body">
+              <div class="row mb-2">
+                  <div class="col-4 me-4" style="width: 5%; padding-right: 0;">
+                      <img src="https://e7.pngegg.com/pngimages/548/649/png-clipart-computer-icons-user-man-person-business-others-miscellaneous-face.png" class="meow-profile-image" alt="Imagen del programa de cocina"/>
+                  </div>
+                  <div class="col-md-8">
+                      <h5 class="card-title">{{ meow.title }}</h5>
+                      <p class="meows-time">Publicado hace 20 minutos</p>
+                  </div>
+              </div>
+              <p class="card-text">{{ meow.text }}</p>
+            </div>
+            <div class="card-footer">
+                <p class="card-text">
+                    <small class="text-body-dark">Publicado por
+                        <a href="{% url 'users_app:user_profile' meow.user.id %}">
+                             {{ meow.user.first_name }} {{ meow.user.last_name }}
+                        </a>
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% include "users/user_login.html" %}
+    {% include "users/user_register.html" %}
+</div>
+{% endblock %}
